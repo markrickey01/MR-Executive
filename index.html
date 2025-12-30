@@ -1,0 +1,700 @@
+import React, { useMemo, useState } from "react";
+import { motion } from "framer-motion";
+import {
+  ArrowRight,
+  Briefcase,
+  Check,
+  ExternalLink,
+  FileText,
+  Github,
+  Globe,
+  Linkedin,
+  Mail,
+  MapPin,
+  Shield,
+  Sparkles,
+  Target,
+  Zap,
+} from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+
+/**
+ * Consulting-grade portfolio — single file.
+ * - Tailwind for layout.
+ * - shadcn/ui components.
+ * - Framer Motion micro-interactions.
+ *
+ * Drop this into a Next.js page (e.g., app/page.tsx) or a route.
+ */
+
+const cx = (...classes: Array<string | false | null | undefined>) =>
+  classes.filter(Boolean).join(" ");
+
+type CaseStudy = {
+  id: string;
+  title: string;
+  clientType: string;
+  outcome: string;
+  timeframe: string;
+  tags: string[];
+  bullets: string[];
+  proof: { label: string; value: string }[];
+  links?: { label: string; href: string }[];
+};
+
+type Role = {
+  company: string;
+  title: string;
+  dates: string;
+  location?: string;
+  highlights: string[];
+};
+
+const SITE = {
+  name: "Mark L. Rickey",
+  headline: "Commander-operator leader for modern growth, public trust, and digital transformation.",
+  subhead:
+    "I build systems that ship. Strategy → operating model → execution. Clean comms. Measurable outcomes.",
+  location: "Indiana, USA",
+  email: "markrickey01@gmail.com",
+  links: {
+    linkedin: "https://www.linkedin.com/in/YOUR_HANDLE",
+    github: "https://github.com/YOUR_HANDLE",
+    resume: "/Mark-Rickey-Resume.pdf",
+  },
+};
+
+const PRIMARY_SKILLS = [
+  { icon: Target, title: "Strategy & Operating Model", desc: "North star, KPIs, governance, decision rights." },
+  { icon: Zap, title: "Execution Systems", desc: "Playbooks, automations, dashboards, process design." },
+  { icon: Shield, title: "Risk & Compliance", desc: "Controls, audit trails, data hygiene, stakeholder trust." },
+  { icon: Sparkles, title: "Brand + Digital", desc: "Content systems, analytics, conversion, UX writing." },
+];
+
+const ROLES: Role[] = [
+  {
+    company: "Historic Downtown Kendallville (HDK)",
+    title: "Executive Director",
+    dates: "2025 — Present",
+    location: "Kendallville, IN",
+    highlights: [
+      "Rebuilt operating rhythm: board reporting, committee structure, KPI tracking, and vendor governance.",
+      "Modernized the tech stack (Google Workspace, analytics, forms, CRM workflows) to reduce friction and increase visibility.",
+      "Delivered event and partnership execution with clear ownership, budgets, and post-mortems.",
+    ],
+  },
+  {
+    company: "U.S. Army",
+    title: "Public Affairs Project Manager",
+    dates: "8 years",
+    location: "Global",
+    highlights: [
+      "Led cross-functional teams under time pressure; shipped comms, stakeholder products, and operational plans.",
+      "Built repeatable processes for planning, approvals, and messaging discipline across units.",
+      "Translated complex issues into clear narratives for leaders and public audiences.",
+    ],
+  },
+  {
+    company: "McDonald's Global Headquarters",
+    title: "Digital Optimization Supervisor",
+    dates: "(Prior role)",
+    location: "Chicago area",
+    highlights: [
+      "Improved digital experiences via analytics-informed optimization and governance.",
+      "Coordinated stakeholders across marketing, digital, and ops to move work through.",
+    ],
+  },
+];
+
+const CASE_STUDIES: CaseStudy[] = [
+  {
+    id: "ed-ops",
+    title: "Nonprofit Operating System Rebuild",
+    clientType: "Public trust / nonprofit",
+    outcome: "Turned ambiguity into operating cadence with measurable reporting",
+    timeframe: "First 60 days",
+    tags: ["Operating model", "Governance", "KPIs", "Board reporting"],
+    bullets: [
+      "Diagnosed failure points: unclear decision rights, scattered files, inconsistent financial/reporting artifacts.",
+      "Implemented a weekly exec rhythm: priorities, blockers, commitments, and board-ready summaries.",
+      "Standardized templates for budgets, event plans, vendor scopes, and post-event ROI reviews.",
+      "Built a single source of truth in Google Workspace (permissions + naming conventions + change log).",
+    ],
+    proof: [
+      { label: "Time-to-answer board questions", value: "↓ materially" },
+      { label: "Visibility", value: "Weekly KPI + status snapshots" },
+      { label: "Operational risk", value: "Controls + governance introduced" },
+    ],
+    links: [{ label: "One-page operating blueprint", href: "#" }],
+  },
+  {
+    id: "digital-system",
+    title: "Digital Measurement + Content Engine",
+    clientType: "Civic brand / economic development",
+    outcome: "Improved clarity, consistency, and conversion with analytics-backed content",
+    timeframe: "90 days",
+    tags: ["Analytics", "Content ops", "Automation", "GA4"],
+    bullets: [
+      "Defined funnel events: volunteer signups, membership actions, event RSVPs, sponsor interest.",
+      "Built dashboards + automated reporting; reduced manual reporting cycles.",
+      "Deployed modular content templates (campaign briefs, post formats, asset checklists).",
+      "Created a 'runbook' so the system survives staff turnover.",
+    ],
+    proof: [
+      { label: "Reporting effort", value: "↓ hours/week" },
+      { label: "Consistency", value: "Templates + review gates" },
+      { label: "Governance", value: "Tracking + audit trail" },
+    ],
+    links: [{ label: "Measurement plan", href: "#" }],
+  },
+  {
+    id: "comms-lead",
+    title: "High-Stakes Comms Under Constraints",
+    clientType: "Military / public affairs",
+    outcome: "Delivered leadership messaging and stakeholder alignment on deadline",
+    timeframe: "Ongoing",
+    tags: ["Stakeholders", "Narrative", "Crisis comms", "Execution"],
+    bullets: [
+      "Built crisp, defensible narratives: intent, facts, risks, and next actions.",
+      "Ran approval workflows to avoid 'last-minute chaos' and protect leadership bandwidth.",
+      "Shipped products that were usable immediately: talking points, briefs, scripts, and Q&A.",
+    ],
+    proof: [
+      { label: "Decision velocity", value: "↑ with structured briefs" },
+      { label: "Message discipline", value: "↑ with templates" },
+      { label: "Stakeholder friction", value: "↓ via clarity" },
+    ],
+  },
+];
+
+const PROJECT_LINKS = [
+  { icon: FileText, label: "Resume (PDF)", href: SITE.links.resume },
+  { icon: Linkedin, label: "LinkedIn", href: SITE.links.linkedin },
+  { icon: Github, label: "GitHub", href: SITE.links.github },
+];
+
+const FADE_UP = {
+  hidden: { opacity: 0, y: 12 },
+  show: { opacity: 1, y: 0 },
+};
+
+function Pill({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/80">
+      {children}
+    </span>
+  );
+}
+
+function SectionHeader({
+  eyebrow,
+  title,
+  desc,
+}: {
+  eyebrow: string;
+  title: string;
+  desc?: string;
+}) {
+  return (
+    <div className="mb-8">
+      <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-white/60">
+        <span className="h-[1px] w-10 bg-white/15" />
+        {eyebrow}
+      </div>
+      <h2 className="mt-3 text-2xl font-semibold text-white md:text-3xl">{title}</h2>
+      {desc ? <p className="mt-2 max-w-2xl text-sm text-white/70 md:text-base">{desc}</p> : null}
+    </div>
+  );
+}
+
+function LinkButton({
+  href,
+  icon: Icon,
+  label,
+  variant = "secondary",
+}: {
+  href: string;
+  icon: React.ElementType;
+  label: string;
+  variant?: "default" | "secondary";
+}) {
+  const isExternal = /^https?:\/\//.test(href);
+  return (
+    <Button
+      asChild
+      variant={variant === "default" ? "default" : "secondary"}
+      className={cx(
+        "rounded-2xl",
+        variant === "secondary" &&
+          "bg-white/5 text-white hover:bg-white/10 border border-white/10"
+      )}
+    >
+      <a href={href} target={isExternal ? "_blank" : undefined} rel={isExternal ? "noreferrer" : undefined}>
+        <Icon className="mr-2 h-4 w-4" />
+        {label}
+        {isExternal ? <ExternalLink className="ml-2 h-4 w-4 opacity-70" /> : null}
+      </a>
+    </Button>
+  );
+}
+
+function Metric({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+      <div className="text-xs uppercase tracking-[0.2em] text-white/60">{label}</div>
+      <div className="mt-1 text-lg font-semibold text-white">{value}</div>
+    </div>
+  );
+}
+
+function Navbar({ onJump }: { onJump: (id: string) => void }) {
+  const items = [
+    { id: "work", label: "Work" },
+    { id: "case-studies", label: "Case Studies" },
+    { id: "experience", label: "Experience" },
+    { id: "skills", label: "Focus" },
+    { id: "contact", label: "Contact" },
+  ];
+
+  return (
+    <div className="sticky top-0 z-50 border-b border-white/10 bg-black/40 backdrop-blur">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 md:px-6">
+        <button
+          onClick={() => onJump("top")}
+          className="flex items-center gap-2 text-sm font-semibold text-white"
+          aria-label="Jump to top"
+        >
+          <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl border border-white/10 bg-white/5">
+            <Globe className="h-4 w-4" />
+          </span>
+          {SITE.name}
+        </button>
+
+        <div className="hidden items-center gap-1 md:flex">
+          {items.map((it) => (
+            <button
+              key={it.id}
+              onClick={() => onJump(it.id)}
+              className="rounded-xl px-3 py-2 text-sm text-white/70 hover:bg-white/5 hover:text-white"
+            >
+              {it.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-2">
+          <LinkButton href={SITE.links.resume} icon={FileText} label="Resume" />
+          <LinkButton href={`mailto:${SITE.email}`} icon={Mail} label="Email" variant="default" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CaseStudyCard({ cs }: { cs: CaseStudy }) {
+  return (
+    <Card className="rounded-3xl border-white/10 bg-white/5 shadow-none">
+      <CardHeader className="space-y-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge className="rounded-xl bg-white/10 text-white hover:bg-white/10">{cs.clientType}</Badge>
+          <Pill>{cs.timeframe}</Pill>
+        </div>
+        <CardTitle className="text-white">{cs.title}</CardTitle>
+        <p className="text-sm text-white/70">{cs.outcome}</p>
+        <div className="flex flex-wrap gap-2">
+          {cs.tags.map((t) => (
+            <Pill key={t}>{t}</Pill>
+          ))}
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <ul className="space-y-2 text-sm text-white/75">
+          {cs.bullets.map((b, i) => (
+            <li key={i} className="flex gap-2">
+              <Check className="mt-0.5 h-4 w-4 flex-none text-white/70" />
+              <span>{b}</span>
+            </li>
+          ))}
+        </ul>
+
+        <div className="grid gap-3 md:grid-cols-3">
+          {cs.proof.map((p) => (
+            <Metric key={p.label} label={p.label} value={p.value} />
+          ))}
+        </div>
+
+        {cs.links?.length ? (
+          <div className="flex flex-wrap gap-2 pt-2">
+            {cs.links.map((l) => (
+              <Button
+                key={l.label}
+                asChild
+                variant="secondary"
+                className="rounded-2xl bg-white/5 text-white hover:bg-white/10 border border-white/10"
+              >
+                <a href={l.href}>
+                  {l.label}
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </a>
+              </Button>
+            ))}
+          </div>
+        ) : null}
+      </CardContent>
+    </Card>
+  );
+}
+
+export default function Portfolio() {
+  const [query, setQuery] = useState("");
+
+  const filteredCaseStudies = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return CASE_STUDIES;
+    return CASE_STUDIES.filter((cs) => {
+      const hay = [cs.title, cs.clientType, cs.outcome, cs.timeframe, cs.tags.join(" "), cs.bullets.join(" ")]
+        .join(" ")
+        .toLowerCase();
+      return hay.includes(q);
+    });
+  }, [query]);
+
+  const jump = (id: string) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  return (
+    <div id="top" className="min-h-screen bg-[#07070A] text-white">
+      <Navbar onJump={jump} />
+
+      {/* Hero */}
+      <div className="relative overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 opacity-70">
+          <div className="absolute -top-20 left-1/2 h-80 w-[48rem] -translate-x-1/2 rounded-full bg-white/10 blur-3xl" />
+          <div className="absolute -bottom-24 right-0 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
+        </div>
+
+        <div className="mx-auto max-w-6xl px-4 pt-14 pb-10 md:px-6 md:pt-20">
+          <motion.div
+            initial="hidden"
+            animate="show"
+            variants={FADE_UP}
+            transition={{ duration: 0.5 }}
+            className="grid gap-10 md:grid-cols-[1.3fr_0.7fr]"
+          >
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <Pill>
+                  <MapPin className="mr-2 h-3.5 w-3.5" />
+                  {SITE.location}
+                </Pill>
+                <Pill>
+                  <Briefcase className="mr-2 h-3.5 w-3.5" />
+                  Strategy + Execution
+                </Pill>
+                <Pill>
+                  <Shield className="mr-2 h-3.5 w-3.5" />
+                  Public Trust Mindset
+                </Pill>
+              </div>
+
+              <h1 className="mt-5 text-4xl font-semibold leading-tight md:text-6xl">
+                {SITE.headline}
+              </h1>
+              <p className="mt-4 max-w-2xl text-base text-white/75 md:text-lg">{SITE.subhead}</p>
+
+              <div className="mt-7 flex flex-wrap items-center gap-3">
+                <LinkButton href={SITE.links.resume} icon={FileText} label="Download Resume" variant="default" />
+                <LinkButton href={SITE.links.linkedin} icon={Linkedin} label="LinkedIn" />
+                <LinkButton href={SITE.links.github} icon={Github} label="GitHub" />
+              </div>
+
+              <div className="mt-8 grid gap-3 md:grid-cols-3">
+                <Metric label="Mode" value="Consulting-grade delivery" />
+                <Metric label="Strength" value="Clarity + cadence" />
+                <Metric label="Bias" value="Ship, measure, improve" />
+              </div>
+            </div>
+
+            <Card className="rounded-3xl border-white/10 bg-white/5 shadow-none">
+              <CardHeader className="space-y-2">
+                <CardTitle className="text-white">What you get</CardTitle>
+                <p className="text-sm text-white/70">
+                  If you hire me, you’re buying outcomes and operational calm.
+                </p>
+              </CardHeader>
+              <CardContent className="space-y-4 text-sm text-white/75">
+                {[ 
+                  "A clear plan with decision points (not vibes).",
+                  "Artifacts leaders can use immediately: briefs, dashboards, playbooks.",
+                  "Tight writing and clean stakeholder management.",
+                  "Measured progress: KPIs, review gates, and honest post-mortems.",
+                ].map((x) => (
+                  <div key={x} className="flex gap-2">
+                    <Check className="mt-0.5 h-4 w-4 flex-none text-white/70" />
+                    <span>{x}</span>
+                  </div>
+                ))}
+                <Separator className="bg-white/10" />
+                <div className="space-y-2">
+                  <div className="text-xs uppercase tracking-[0.2em] text-white/60">Primary lanes</div>
+                  <div className="flex flex-wrap gap-2">
+                    {["Program/Project Mgmt", "Public Affairs", "Digital Ops", "Gov/Nonprofit", "Risk-aware execution"].map(
+                      (t) => (
+                        <Pill key={t}>{t}</Pill>
+                      )
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Work / Case Studies */}
+      <div id="work" className="mx-auto max-w-6xl px-4 py-14 md:px-6">
+        <SectionHeader
+          eyebrow="Work"
+          title="Proof over promises"
+          desc="Tight stories. Clear outcomes. Reusable systems. This is what consulting teams actually respect."
+        />
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <Card className="rounded-3xl border-white/10 bg-white/5 shadow-none">
+            <CardHeader>
+              <CardTitle className="text-white">Signature deliverables</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 text-sm text-white/75">
+              {[ 
+                "Executive brief: context → options → risk → recommendation",
+                "Operating model: roles, decision rights, cadence, templates",
+                "Measurement plan: KPIs, dashboards, review gates",
+                "Implementation plan: milestones, owners, dependencies, comms",
+                "Post-mortem: what happened, why, what changes next",
+              ].map((d) => (
+                <div key={d} className="flex gap-2">
+                  <Check className="mt-0.5 h-4 w-4 flex-none text-white/70" />
+                  <span>{d}</span>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-3xl border-white/10 bg-white/5 shadow-none">
+            <CardHeader>
+              <CardTitle className="text-white">How I operate</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 text-sm text-white/75">
+              {[ 
+                "Fast diagnosis: identify constraints and failure modes.",
+                "Cadence first: weekly rhythm creates compounding results.",
+                "Write it down: templates prevent rework and politics.",
+                "Measure honestly: KPIs are a compass, not decoration.",
+                "Close the loop: decisions, action, verification, and learning.",
+              ].map((d) => (
+                <div key={d} className="flex gap-2">
+                  <Check className="mt-0.5 h-4 w-4 flex-none text-white/70" />
+                  <span>{d}</span>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      <div id="case-studies" className="mx-auto max-w-6xl px-4 pb-14 md:px-6">
+        <SectionHeader
+          eyebrow="Case Studies"
+          title="Selected engagements"
+          desc="Replace placeholders with your real metrics, links, and artifacts. Keep it disciplined."
+        />
+
+        <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div className="max-w-xl text-sm text-white/70">
+            Tip: consulting recruiters skim. Make your first 10 seconds brutal: headline → outcomes → proof.
+          </div>
+          <div className="w-full md:w-[360px]">
+            <Input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Filter case studies (e.g., governance, analytics, KPIs)"
+              className="rounded-2xl border-white/10 bg-white/5 text-white placeholder:text-white/40"
+            />
+          </div>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2">
+          {filteredCaseStudies.map((cs) => (
+            <motion.div
+              key={cs.id}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.35 }}
+            >
+              <CaseStudyCard cs={cs} />
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Experience */}
+      <div id="experience" className="mx-auto max-w-6xl px-4 py-14 md:px-6">
+        <SectionHeader
+          eyebrow="Experience"
+          title="Leadership, execution, and credibility"
+          desc="Keep this short. Recruiters don’t want a biography — they want signal."
+        />
+
+        <div className="grid gap-6 md:grid-cols-3">
+          {ROLES.map((r) => (
+            <Card key={r.company} className="rounded-3xl border-white/10 bg-white/5 shadow-none">
+              <CardHeader className="space-y-2">
+                <CardTitle className="text-white">{r.title}</CardTitle>
+                <div className="text-sm text-white/70">
+                  <div className="font-medium text-white/85">{r.company}</div>
+                  <div className="text-white/60">{r.dates}</div>
+                  {r.location ? <div className="text-white/60">{r.location}</div> : null}
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-2 text-sm text-white/75">
+                {r.highlights.map((h, i) => (
+                  <div key={i} className="flex gap-2">
+                    <Check className="mt-0.5 h-4 w-4 flex-none text-white/70" />
+                    <span>{h}</span>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      {/* Focus / Skills */}
+      <div id="skills" className="mx-auto max-w-6xl px-4 pb-14 md:px-6">
+        <SectionHeader
+          eyebrow="Focus"
+          title="Where I create leverage"
+          desc="Four lanes that map cleanly to consulting interview narratives."
+        />
+
+        <div className="grid gap-6 md:grid-cols-4">
+          {PRIMARY_SKILLS.map((s) => (
+            <Card key={s.title} className="rounded-3xl border-white/10 bg-white/5 shadow-none">
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
+                    <s.icon className="h-5 w-5" />
+                  </span>
+                  <CardTitle className="text-base text-white">{s.title}</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent className="text-sm text-white/70">{s.desc}</CardContent>
+            </Card>
+          ))}
+        </div>
+
+        <div className="mt-8 grid gap-4 md:grid-cols-2">
+          <Card className="rounded-3xl border-white/10 bg-white/5 shadow-none">
+            <CardHeader>
+              <CardTitle className="text-white">Tech I actually use</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-wrap gap-2">
+              {[ 
+                "Google Workspace",
+                "GA4 / Tag Manager",
+                "Dashboards (Sheets / Looker)",
+                "CRM workflows",
+                "Automation (Apps Script / Zapier)",
+                "Wix → modern web stacks",
+                "Documentation + playbooks",
+              ].map((t) => (
+                <Pill key={t}>{t}</Pill>
+              ))}
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-3xl border-white/10 bg-white/5 shadow-none">
+            <CardHeader>
+              <CardTitle className="text-white">Interview-ready themes</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2 text-sm text-white/75">
+              {[ 
+                "Influence without authority",
+                "Ambiguity → structure",
+                "Stakeholder conflict → alignment",
+                "Speed with quality controls",
+                "Failure modes + mitigation",
+              ].map((t) => (
+                <div key={t} className="flex gap-2">
+                  <Check className="mt-0.5 h-4 w-4 flex-none text-white/70" />
+                  <span>{t}</span>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      {/* Contact */}
+      <div id="contact" className="mx-auto max-w-6xl px-4 pb-16 md:px-6">
+        <SectionHeader
+          eyebrow="Contact"
+          title="Let’s talk"
+          desc="If you want a disciplined operator who ships, email me."
+        />
+
+        <Card className="rounded-3xl border-white/10 bg-white/5 shadow-none">
+          <CardContent className="grid gap-6 p-6 md:grid-cols-[1fr_0.6fr] md:p-10">
+            <div className="space-y-4">
+              <div className="text-lg font-semibold text-white">{SITE.name}</div>
+              <div className="text-sm text-white/75">
+                Prefer direct, structured conversations. If you have a role, send:
+                <ul className="mt-2 list-disc space-y-1 pl-5">
+                  <li>Job link + level</li>
+                  <li>What success looks like in 90 days</li>
+                  <li>Two constraints (time/budget/politics)</li>
+                </ul>
+              </div>
+              <div className="flex flex-wrap gap-2 pt-2">
+                <LinkButton href={`mailto:${SITE.email}`} icon={Mail} label={SITE.email} variant="default" />
+                {PROJECT_LINKS.map((l) => (
+                  <LinkButton key={l.label} href={l.href} icon={l.icon} label={l.label} />
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-3xl border border-white/10 bg-black/30 p-6">
+              <div className="text-xs uppercase tracking-[0.2em] text-white/60">Quick note</div>
+              <div className="mt-2 text-sm text-white/75">
+                This site is intentionally minimal. Consulting firms reward clarity and signal — not fireworks.
+              </div>
+              <Separator className="my-4 bg-white/10" />
+              <div className="space-y-2 text-sm text-white/75">
+                <div className="flex items-center gap-2">
+                  <Briefcase className="h-4 w-4" />
+                  <span>Open to: Program/Project Mgmt • Public Affairs • Digital Ops</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <MapPin className="h-4 w-4" />
+                  <span>{SITE.location}</span>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="mt-10 text-center text-xs text-white/50">
+          © {new Date().getFullYear()} {SITE.name}. Built for hiring managers who like signal.
+        </div>
+      </div>
+    </div>
+  );
+}
