@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Mark L. Rickey — Resume" />
+  <title>Mark L. Rickey — Resume</title>
+
+  <style>
+    :root{
+      --bg:#07070A;
+      --card: rgba(255,255,255,.05);
+      --border: rgba(255,255,255,.10);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --muted2: rgba(255,255,255,.60);
+      --max: 980px;
+      --r: 22px;
+      --shadow: 0 16px 40px rgba(0,0,0,.35);
+      --pad: 18px;
+      --pad2: 22px;
+
+      /* gradient vars */
+      --gX: 0px;
+      --gY: 0px;
+      --mx: 50%;
+      --my: 30%;
+      --rot: 200deg;
+      --sheen: .55;
+      --h1: 215;
+      --h2: 255;
+      --h3: 300;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      line-height:1.45;
+      overflow-x:hidden;
+    }
+
+    /* Global interactive gradient field */
+    .fx{
+      position:fixed; inset:0; z-index:-1;
+      pointer-events:none;
+      opacity:.9;
+      background: var(--bg);
+    }
+    .fx::before{
+      content:"";
+      position:absolute; inset:-10%;
+      background:
+        radial-gradient(900px 520px at 18% 12%, rgba(255,255,255,.10), transparent 60%),
+        radial-gradient(760px 460px at 86% 18%, rgba(255,255,255,.08), transparent 60%),
+        radial-gradient(860px 560px at 55% 88%, rgba(255,255,255,.06), transparent 60%),
+        linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.92));
+      filter: saturate(1.2) contrast(1.05);
+      transform: translate3d(var(--gX), var(--gY), 0);
+      will-change: transform;
+    }
+    .fx::after{
+      content:"";
+      position:absolute; inset:-20%;
+      background:
+        conic-gradient(from var(--rot) at var(--mx) var(--my),
+          hsla(var(--h1), 88%, 62%, .14),
+          hsla(var(--h2), 88%, 62%, .10),
+          hsla(var(--h3), 88%, 62%, .08),
+          hsla(var(--h2), 88%, 62%, .10),
+          hsla(var(--h1), 88%, 62%, .14)
+        );
+      mix-blend-mode: screen;
+      opacity: var(--sheen);
+      filter: blur(26px) saturate(1.25);
+      transform: translate3d(calc(var(--gX) * -0.6), calc(var(--gY) * -0.6), 0);
+      will-change: transform, opacity;
+    }
+
+    .wrap{ max-width:var(--max); margin:0 auto; padding: 0 16px; }
+    .topbar{
+      position: sticky; top:0; z-index:10;
+      background: rgba(0,0,0,.42);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    .topbar .row{
+      max-width: var(--max);
+      margin:0 auto;
+      padding: 10px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:700;
+      letter-spacing:.2px;
+      white-space:nowrap;
+    }
+    .dot{
+      width:34px; height:34px;
+      display:grid; place-items:center;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.05);
+      box-shadow: var(--shadow);
+    }
+    .actions{ display:flex; gap:8px; align-items:center; }
+    .btn{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      padding:9px 12px;
+      border-radius: 14px;
+      text-decoration:none;
+      font-size:13px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      cursor:pointer;
+    }
+    .btn:hover{ background: rgba(255,255,255,.10); }
+    .btn.primary{
+      background: rgba(255,255,255,.12);
+      border-color: rgba(255,255,255,.16);
+    }
+
+    main{ padding: 16px 0 28px; }
+
+    .sheet{
+      background: rgba(255,255,255,.03);
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      box-shadow: 0 18px 46px rgba(0,0,0,.35);
+      overflow:hidden;
+    }
+    .sheet .in{ padding: 22px; }
+
+    .header{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:16px;
+      align-items:start;
+    }
+    @media (max-width: 860px){ .header{ grid-template-columns: 1fr; } }
+
+    h1{
+      margin:0;
+      font-size: 30px;
+      line-height:1.1;
+      letter-spacing:-.4px;
+    }
+    .tagline{ margin-top:8px; color: var(--muted); font-size: 14px; }
+    .contact{
+      display:flex; flex-direction:column; gap:8px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      border-radius: 18px;
+      padding: 14px 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .contact a{ color: var(--text); text-decoration:none; }
+    .contact a:hover{ text-decoration: underline; }
+
+    .metaRow{
+      display:flex; flex-wrap:wrap; gap:8px;
+      margin-top: 12px;
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      border-radius: 999px;
+      padding:6px 10px;
+      font-size:12px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.82);
+      white-space:nowrap;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .section{
+      border-top: 1px solid rgba(255,255,255,.10);
+      padding-top: 14px;
+    }
+    .section:first-child{ border-top:0; padding-top:0; }
+
+    .sectTitle{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin-bottom: 8px;
+    }
+    h2{
+      margin:0;
+      font-size: 14px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color: rgba(255,255,255,.72);
+    }
+
+    .twoCol{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:14px;
+    }
+    @media (max-width: 860px){ .twoCol{ grid-template-columns:1fr; } }
+
+    .card{
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .job{
+      display:grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items:baseline;
+    }
+    .job h3{
+      margin:0;
+      font-size: 15px;
+      color: var(--text);
+    }
+    .job .where{
+      margin-top:2px;
+      color: var(--muted2);
+      font-size: 13px;
+    }
+    .job .when{
+      color: rgba(255,255,255,.62);
+      font-size: 12px;
+      white-space:nowrap;
+    }
+
+    ul{
+      margin: 8px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    li{ margin: 6px 0; }
+
+    .skills{
+      display:flex; flex-wrap:wrap; gap:8px;
+      margin-top: 8px;
+    }
+
+    .foot{
+      margin-top: 12px;
+      color: rgba(255,255,255,.55);
+      font-size: 12px;
+      text-align:center;
+    }
+
+    /* Print: clean white paper */
+    @media print{
+      :root{ --bg:#ffffff; }
+      body{ background:#fff; color:#111; }
+      .fx, .topbar{ display:none !important; }
+      .sheet{ border:0; box-shadow:none; background:#fff; }
+      .sheet .in{ padding: 0; }
+      .card, .contact{ background:#fff; border:1px solid #ddd; }
+      .pill{ border:1px solid #ddd; background:#fff; color:#111; }
+      h2{ color:#222; }
+      ul{ color:#222; }
+      .tagline, .where, .when{ color:#444 !important; }
+      a{ color:#111; text-decoration:none; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="fx" id="fx"></div>
+
+  <header class="topbar">
+    <div class="row">
+      <div class="brand">
+        <div class="dot">◎</div>
+        <div>Resume</div>
+      </div>
+      <div class="actions">
+        <a class="btn" href="./index.html">Portfolio</a>
+        <button class="btn primary" onclick="window.print()">Print</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <div class="sheet">
+        <div class="in">
+          <!-- Header -->
+          <div class="header">
+            <div>
+              <h1>Mark L. Rickey, MPA</h1>
+              <div class="tagline">
+                Commander-operator leader • Program/Project Management • Public Affairs • Digital Operations
+              </div>
+
+              <div class="metaRow">
+                <span class="pill">Indiana, USA</span>
+                <span class="pill">Veteran (U.S. Army)</span>
+                <span class="pill">Risk-aware execution</span>
+                <span class="pill">Strategy → cadence → results</span>
+              </div>
+            </div>
+
+            <div class="contact">
+              <div><strong>Email:</strong> <a href="mailto:markrickey01@gmail.com">markrickey01@gmail.com</a></div>
+              <div><strong>Phone:</strong> <a href="tel:+12604447307">260.444.7307</a></div>
+              <div><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/YOUR_HANDLE" target="_blank" rel="noreferrer">linkedin.com/in/YOUR_HANDLE</a></div>
+              <div><strong>GitHub:</strong> <a href="https://github.com/YOUR_HANDLE" target="_blank" rel="noreferrer">github.com/YOUR_HANDLE</a></div>
+            </div>
+          </div>
+
+          <div class="grid">
+            <!-- Summary -->
+            <section class="section">
+              <div class="sectTitle">
+                <h2>Summary</h2>
+              </div>
+              <div class="card">
+                <div style="color: var(--muted); font-size: 13px;">
+                  Operator-minded leader with an eight-year military foundation and hands-on civilian execution.
+                  Known for turning ambiguity into structure: operating cadence, decision rights, dashboards, and
+                  leader-ready communication. Bias toward shipping measurable outcomes with clean governance.
+                </div>
+              </div>
+            </section>
+
+            <!-- Core Strengths + Skills -->
+            <section class="section">
+              <div class="sectTitle">
+                <h2>Core Strengths</h2>
+              </div>
+
+              <div class="twoCol">
+                <div class="card">
+                  <div style="font-weight:700; margin-bottom:6px;">What I do best</div>
+                  <ul>
+                    <li>Operating models: roles, decision rights, cadence, templates</li>
+                    <li>Program/project execution: milestones, owners, dependencies, comms</li>
+                    <li>Stakeholder alignment: clear briefs, options, risks, recommendations</li>
+                    <li>Measurement: KPIs, dashboards, review gates, honest post-mortems</li>
+                  </ul>
+                </div>
+
+                <div class="card">
+                  <div style="font-weight:700; margin-bottom:6px;">Tools & platforms</div>
+                  <div class="skills">
+                    <span class="pill">Google Workspace</span>
+                    <span class="pill">GA4 / Tag Manager</span>
+                    <span class="pill">Dashboards (Sheets/Looker)</span>
+                    <span class="pill">Automation (Apps Script/Zapier)</span>
+                    <span class="pill">CRM workflows</span>
+                    <span class="pill">Documentation / Playbooks</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Experience -->
+            <section class="section">
+              <div class="sectTitle">
+                <h2>Experience</h2>
+              </div>
+
+              <div class="card">
+                <div class="job">
+                  <div>
+                    <h3>Executive Director — Historic Downtown Kendallville (HDK)</h3>
+                    <div class="where">Kendallville, IN</div>
+                  </div>
+                  <div class="when">2025 — Present</div>
+                </div>
+                <ul>
+                  <li>Rebuilt operating rhythm: board reporting, committee structure, KPI tracking, vendor governance.</li>
+                  <li>Modernized the tech stack (Google Workspace, analytics, forms, workflow discipline) to reduce friction and increase visibility.</li>
+                  <li>Delivered event and partnership execution with clear ownership, budgets, and post-mortems.</li>
+                </ul>
+              </div>
+
+              <div class="card">
+                <div class="job">
+                  <div>
+                    <h3>Public Affairs Project Manager — U.S. Army</h3>
+                    <div class="where">Global</div>
+                  </div>
+                  <div class="when">8 years</div>
+                </div>
+                <ul>
+                  <li>Led cross-functional teams under time pressure; shipped comms products and operational plans.</li>
+                  <li>Built repeatable planning and approval processes; improved message discipline across stakeholders.</li>
+                  <li>Translated complex issues into clear narratives for leaders and public audiences.</li>
+                </ul>
+              </div>
+
+              <div class="card">
+                <div class="job">
+                  <div>
+                    <h3>Digital Optimization Supervisor — McDonald’s Global Headquarters</h3>
+                    <div class="where">Chicago area</div>
+                  </div>
+                  <div class="when">(Prior role)</div>
+                </div>
+                <ul>
+                  <li>Improved digital experiences via analytics-informed optimization and governance.</li>
+                  <li>Coordinated stakeholders across marketing, digital, and operations to move work through.</li>
+                </ul>
+              </div>
+            </section>
+
+            <!-- Education + Certifications -->
+            <section class="section">
+              <div class="sectTitle">
+                <h2>Education & Credentials</h2>
+              </div>
+
+              <div class="twoCol">
+                <div class="card">
+                  <div style="font-weight:700; margin-bottom:6px;">Education</div>
+                  <ul>
+                    <li>MPA — Master of Public Administration (add school + year)</li>
+                    <li>(Add Bachelor’s degree if applicable)</li>
+                  </ul>
+                </div>
+
+                <div class="card">
+                  <div style="font-weight:700; margin-bottom:6px;">Certifications (optional)</div>
+                  <ul>
+                    <li>(Add: PMP / CAPM / Security+ / etc.)</li>
+                    <li>(Add: Google Analytics / Agile / etc.)</li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+
+            <!-- Projects / Highlights -->
+            <section class="section">
+              <div class="sectTitle">
+                <h2>Selected Highlights</h2>
+              </div>
+              <div class="card">
+                <ul>
+                  <li>Operating system rebuild: cadence + templates + governance that survives staff turnover.</li>
+                  <li>Measurement plan: defined funnel events and automated reporting for repeatable visibility.</li>
+                  <li>Leader-ready writing: briefs that reduce thrash and increase decision velocity.</li>
+                </ul>
+              </div>
+            </section>
+
+            <div class="foot">
+              © <span id="y"></span> Mark L. Rickey • Built as HTML for hiring managers who skim.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Year
+    document.getElementById("y").textContent = new Date().getFullYear();
+
+    // Interactive gradient controller (scroll + mouse)
+    const fx = document.getElementById("fx");
+    const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+
+    let mx = 0.5, my = 0.3;
+    let tx = 0, ty = 0;
+    let raf = null;
+
+    function setVars(p){
+      const h1 = 210 + (55 * p);
+      const h2 = (h1 + 32) % 360;
+      const h3 = (h1 + 78) % 360;
+      const rot = 200 + (220 * p);
+      const sheen = 0.62 - (0.28 * p);
+
+      document.documentElement.style.setProperty("--h1", h1.toFixed(1));
+      document.documentElement.style.setProperty("--h2", h2.toFixed(1));
+      document.documentElement.style.setProperty("--h3", h3.toFixed(1));
+      document.documentElement.style.setProperty("--rot", rot.toFixed(1) + "deg");
+      document.documentElement.style.setProperty("--sheen", sheen.toFixed(3));
+
+      document.documentElement.style.setProperty("--mx", (mx * 100).toFixed(2) + "%");
+      document.documentElement.style.setProperty("--my", (my * 100).toFixed(2) + "%");
+    }
+
+    function onScroll(){
+      const doc = document.documentElement;
+      const max = (doc.scrollHeight - doc.clientHeight) || 1;
+      const p = clamp(window.scrollY / max, 0, 1);
+
+      // subtle drift with scroll
+      const driftY = (-120 * p);
+      document.documentElement.style.setProperty("--gY", driftY.toFixed(1) + "px");
+      fx.style.opacity = (0.92 - (0.25 * p)).toFixed(3);
+
+      setVars(p);
+    }
+
+    function onMove(e){
+      const w = window.innerWidth || 1;
+      const h = window.innerHeight || 1;
+      mx = clamp(e.clientX / w, 0, 1);
+      my = clamp(e.clientY / h, 0, 1);
+
+      const px = (mx - 0.5) * 26;
+      const py = (my - 0.5) * 22;
+
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        tx += (px - tx) * 0.12;
+        ty += (py - ty) * 0.12;
+
+        document.documentElement.style.setProperty("--gX", tx.toFixed(1) + "px");
+        // add mouse drift on top of scroll drift using calc
+        const scrollY = getComputedStyle(document.documentElement).getPropertyValue("--gY").trim() || "0px";
+        document.documentElement.style.setProperty("--gY", `calc(${scrollY} + ${ty.toFixed(1)}px)`);
+
+        onScroll();
+        raf = null;
+      });
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("pointermove", onMove, { passive: true });
+
+    onScroll();
+  </script>
+</body>
+</html>
