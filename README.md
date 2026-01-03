@@ -61,7 +61,7 @@ The site is built accordingly.
 ## Contact
 
 - **Email:** markrickey01@gmail.com  
-- **LinkedIn:** _(add link)_  
+- **LinkedIn:** (https://www.linkedin.com/in/markrickey01/)  
 
 Direct, structured conversations preferred.
 
