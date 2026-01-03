@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mark Rickey — Deep Dive Case Studies</title>
+  <link rel="stylesheet" href="style.css"> <style>
+    :root { --accent: #3b82f6; }
+    body { background: #07070A; color: rgba(255,255,255,.92); }
+    .layout { display: grid; grid-template-columns: 280px 1fr; gap: 60px; max-width: 1200px; margin: 0 auto; padding: 60px 20px; }
+    
+    /* Sticky Sidebar Navigation */
+    aside { position: sticky; top: 100px; height: fit-content; }
+    .side-nav { list-style: none; padding: 0; border-left: 1px solid rgba(255,255,255,.1); }
+    .side-nav li { padding: 10px 20px; font-size: 13px; color: rgba(255,255,255,.5); cursor: pointer; transition: 0.3s; }
+    .side-nav li.active { color: white; border-left: 2px solid var(--accent); margin-left: -1px; }
+
+    /* Case Study Content */
+    .study-block { margin-bottom: 120px; opacity: 0; transform: translateY(30px); transition: 0.8s ease-out; }
+    .study-block.visible { opacity: 1; transform: translateY(0); }
+    
+    .data-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 40px 0; }
+    .data-card { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.1); padding: 30px; border-radius: 12px; }
+    .data-val { font-size: 32px; font-weight: 700; color: var(--accent); display: block; }
+    .data-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,.5); }
+
+    .narrative { font-size: 18px; line-height: 1.6; color: rgba(255,255,255,.8); max-width: 700px; }
+    h2 { font-size: 42px; margin-bottom: 20px; letter-spacing: -1px; }
+    
+    @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } aside { display: none; } }
+  </style>
+</head>
+<body>
+
+  <nav class="nav" style="position: sticky; top: 0; z-index: 100; background: rgba(0,0,0,.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,.1);">
+    <div class="wrap" style="padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;">
+      <a href="index.html" style="color: white; text-decoration: none; font-weight: 700;">← Back to Portfolio</a>
+      <div class="badge" style="background: var(--accent); color: white; font-size: 10px; padding: 4px 10px; border-radius: 20px;">SYSTEMS ANALYSIS</div>
+    </div>
+  </nav>
+
+  <div class="layout">
+    <aside>
+      <ul class="side-nav">
+        <li class="active" onclick="document.getElementById('os-rebuild').scrollIntoView({behavior:'smooth'})">Operating System Rebuild</li>
+        <li onclick="document.getElementById('digital-engine').scrollIntoView({behavior:'smooth'})">Content & Analytics Engine</li>
+        <li onclick="document.getElementById('military-comms').scrollIntoView({behavior:'smooth'})">High-Stakes Narrative</li>
+      </ul>
+    </aside>
+
+    <main>
+      <section id="os-rebuild" class="study-block">
+        <div class="eyebrow" style="color: var(--accent); font-weight: 700; font-size: 12px; margin-bottom: 10px;">PUBLIC TRUST / NONPROFIT</div>
+        <h2>Nonprofit Operating System Rebuild</h2>
+        <p class="narrative">
+          In my first 60 days as Executive Director at Historic Downtown Kendallville, I identified a core failure point: 
+          operational ambiguity was stalling decision velocity. I moved the organization from "vibes-based" management 
+          to a rigorous, dashboard-driven operating model.
+        </p>
+
+        <div class="data-grid">
+          <div class="data-card">
+            <span class="data-val" data-target="100">0</span>
+            <span class="data-label">Decision Velocity %</span>
+          </div>
+          <div class="data-card">
+            <span class="data-val" data-target="40">0</span>
+            <span class="data-label">Admin Hours Saved / Mo</span>
+          </div>
+          <div class="data-card">
+            <span class="data-val" data-target="12">0</span>
+            <span class="data-label">New Board Controls</span>
+          </div>
+        </div>
+
+        <h3>The Architecture</h3>
+        <ul class="list" style="font-size: 16px;">
+          <li>**Standardized Governance:** Implemented weekly rhythm for blockers and commitments.</li>
+          <li>**Single Source of Truth:** Centralized Google Workspace with strict version control.</li>
+          <li>**Measured Outcomes:** Replaced anecdotal reporting with board-ready snapshots.</li>
+        </ul>
+      </section>
+
+      <section id="digital-engine" class="study-block">
+        <div class="eyebrow" style="color: var(--accent); font-weight: 700; font-size: 12px; margin-bottom: 10px;">CIVIC BRAND / ECONOMIC DEV</div>
+        <h2>Digital Measurement & Content Engine</h2>
+        <p class="narrative">
+          Moving beyond vanity metrics, I built a modular content system for economic development that turned raw 
+          analytics into actionable strategy.
+        </p>
+        </section>
+    </main>
+  </div>
+
+  <script>
+    // Intersection Observer for animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          // Start counting numbers
+          const counters = entry.target.querySelectorAll('.data-val');
+          counters.forEach(c => {
+            const target = +c.getAttribute('data-target');
+            let count = 0;
+            const inc = target / 50;
+            const update = () => {
+              if(count < target) {
+                count += inc;
+                c.innerText = Math.ceil(count) + (target > 50 ? '' : '+');
+                setTimeout(update, 20);
+              } else { c.innerText = target + (target > 50 ? '' : '+'); }
+            };
+            update();
+          });
+        }
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('.study-block').forEach(b => observer.observe(b));
+  </script>
+</body>
+</html>
