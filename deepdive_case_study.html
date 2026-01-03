@@ -3,121 +3,195 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Mark Rickey — Deep Dive Case Studies</title>
-  <link rel="stylesheet" href="style.css"> <style>
-    :root { --accent: #3b82f6; }
-    body { background: #07070A; color: rgba(255,255,255,.92); }
-    .layout { display: grid; grid-template-columns: 280px 1fr; gap: 60px; max-width: 1200px; margin: 0 auto; padding: 60px 20px; }
-    
-    /* Sticky Sidebar Navigation */
-    aside { position: sticky; top: 100px; height: fit-content; }
-    .side-nav { list-style: none; padding: 0; border-left: 1px solid rgba(255,255,255,.1); }
-    .side-nav li { padding: 10px 20px; font-size: 13px; color: rgba(255,255,255,.5); cursor: pointer; transition: 0.3s; }
-    .side-nav li.active { color: white; border-left: 2px solid var(--accent); margin-left: -1px; }
+  <title>Deep Dive Case Studies — Mark Rickey</title>
+  <style>
+    :root {
+      --bg: #07070A;
+      --accent: #3b82f6;
+      --text: rgba(255,255,255,.92);
+      --border: rgba(255,255,255,.1);
+    }
 
-    /* Case Study Content */
-    .study-block { margin-bottom: 120px; opacity: 0; transform: translateY(30px); transition: 0.8s ease-out; }
-    .study-block.visible { opacity: 1; transform: translateY(0); }
-    
-    .data-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 40px 0; }
-    .data-card { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.1); padding: 30px; border-radius: 12px; }
-    .data-val { font-size: 32px; font-weight: 700; color: var(--accent); display: block; }
-    .data-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,.5); }
+    * { box-sizing: border-box; }
+    body, html { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: ui-sans-serif, system-ui, sans-serif; overflow-x: hidden; }
 
-    .narrative { font-size: 18px; line-height: 1.6; color: rgba(255,255,255,.8); max-width: 700px; }
-    h2 { font-size: 42px; margin-bottom: 20px; letter-spacing: -1px; }
-    
-    @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } aside { display: none; } }
+    /* Page Flip / Scroll Snap Container */
+    .snap-container {
+      height: 100vh;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+
+    section {
+      height: 100vh;
+      width: 100vw;
+      scroll-snap-align: start;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .content-wrap {
+      max-width: 1100px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    /* Narrative Styling */
+    .narrative h2 { font-size: 48px; letter-spacing: -2px; margin: 0 0 20px; color: #fff; }
+    .narrative p { font-size: 18px; line-height: 1.6; color: rgba(255,255,255,.7); }
+    .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; background: rgba(59, 130, 246, 0.1); color: var(--accent); font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 15px; }
+
+    /* Dynamic Graphics/Diagrams */
+    .visual-stack {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px;
+      position: relative;
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .stat-row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 20px; }
+    .number { font-size: 64px; font-weight: 800; color: var(--accent); }
+    .label { font-size: 14px; color: rgba(255,255,255,.5); text-transform: uppercase; }
+
+    /* Simple CSS Diagram */
+    .diagram-bar {
+      height: 8px;
+      background: var(--border);
+      border-radius: 4px;
+      margin-top: 10px;
+      width: 0;
+      transition: width 1.5s cubic-bezier(0.1, 0.5, 0.2, 1);
+    }
+    section.active .diagram-bar { width: 100%; }
+
+    /* Navigation Overlay */
+    .nav-hint { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); font-size: 12px; color: rgba(255,255,255,.3); z-index: 10; pointer-events: none; }
+
+    @media (max-width: 900px) {
+      .content-wrap { grid-template-columns: 1fr; overflow-y: auto; }
+      section { height: auto; min-height: 100vh; padding-top: 80px; }
+    }
   </style>
 </head>
 <body>
 
-  <nav class="nav" style="position: sticky; top: 0; z-index: 100; background: rgba(0,0,0,.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,.1);">
-    <div class="wrap" style="padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;">
-      <a href="index.html" style="color: white; text-decoration: none; font-weight: 700;">← Back to Portfolio</a>
-      <div class="badge" style="background: var(--accent); color: white; font-size: 10px; padding: 4px 10px; border-radius: 20px;">SYSTEMS ANALYSIS</div>
-    </div>
-  </nav>
+  <div class="nav-hint">Scroll down for next analysis ↓</div>
 
-  <div class="layout">
-    <aside>
-      <ul class="side-nav">
-        <li class="active" onclick="document.getElementById('os-rebuild').scrollIntoView({behavior:'smooth'})">Operating System Rebuild</li>
-        <li onclick="document.getElementById('digital-engine').scrollIntoView({behavior:'smooth'})">Content & Analytics Engine</li>
-        <li onclick="document.getElementById('military-comms').scrollIntoView({behavior:'smooth'})">High-Stakes Narrative</li>
-      </ul>
-    </aside>
-
-    <main>
-      <section id="os-rebuild" class="study-block">
-        <div class="eyebrow" style="color: var(--accent); font-weight: 700; font-size: 12px; margin-bottom: 10px;">PUBLIC TRUST / NONPROFIT</div>
-        <h2>Nonprofit Operating System Rebuild</h2>
-        <p class="narrative">
-          In my first 60 days as Executive Director at Historic Downtown Kendallville, I identified a core failure point: 
-          operational ambiguity was stalling decision velocity. I moved the organization from "vibes-based" management 
-          to a rigorous, dashboard-driven operating model.
-        </p>
-
-        <div class="data-grid">
-          <div class="data-card">
-            <span class="data-val" data-target="100">0</span>
-            <span class="data-label">Decision Velocity %</span>
-          </div>
-          <div class="data-card">
-            <span class="data-val" data-target="40">0</span>
-            <span class="data-label">Admin Hours Saved / Mo</span>
-          </div>
-          <div class="data-card">
-            <span class="data-val" data-target="12">0</span>
-            <span class="data-label">New Board Controls</span>
-          </div>
+  <div class="snap-container">
+    
+    <section id="os-rebuild">
+      <div class="content-wrap">
+        <div class="narrative">
+          <span class="badge">Governance & Model</span>
+          <h2>Operating System Rebuild</h2>
+          <p>Moving from ambiguity to a structured operating rhythm. I implemented a weekly cadence of decision rights, standard templates, and board-ready reporting that survived staff turnover and increased decision velocity.</p>
+          <ul style="color: rgba(255,255,255,0.5); font-size: 14px; margin-top: 20px;">
+            <li>Standardized Committee Reporting</li>
+            <li>Single Source of Truth (SSOT) Architecture</li>
+            <li>Risk-Aware Vendor Governance</li>
+          </ul>
         </div>
+        <div class="visual-stack">
+          <div class="stat-row">
+            <span class="number" data-val="100">0</span><span class="number">%</span>
+            <span class="label">Decision Transparency</span>
+          </div>
+          <div class="label">Workflow Efficiency Gain</div>
+          <div class="diagram-bar" style="background: linear-gradient(90deg, var(--accent), #60a5fa); width: 0;" data-width="85%"></div>
+          <p style="font-size: 12px; margin-top: 10px; opacity: 0.6;">*Based on pre/post audit of administrative friction points.</p>
+        </div>
+      </div>
+    </section>
 
-        <h3>The Architecture</h3>
-        <ul class="list" style="font-size: 16px;">
-          <li>**Standardized Governance:** Implemented weekly rhythm for blockers and commitments.</li>
-          <li>**Single Source of Truth:** Centralized Google Workspace with strict version control.</li>
-          <li>**Measured Outcomes:** Replaced anecdotal reporting with board-ready snapshots.</li>
-        </ul>
-      </section>
+    <section id="digital-engine">
+      <div class="content-wrap">
+        <div class="narrative">
+          <span class="badge">Digital Operations</span>
+          <h2>Content & Analytics Engine</h2>
+          <p>Built a conversion-focused engine for civic engagement. By defining funnel events in GA4 and automating reporting via Apps Script, we shifted from vanity metrics to actionable economic development data.</p>
+        </div>
+        <div class="visual-stack">
+          <div class="stat-row">
+            <span class="number" data-val="40">0</span><span class="number">hrs</span>
+            <span class="label">Manual Reporting Saved/Mo</span>
+          </div>
+          <div class="label">Data-to-Insight Velocity</div>
+          <div class="diagram-bar" style="background: linear-gradient(90deg, #10b981, #34d399); width: 0;" data-width="92%"></div>
+        </div>
+      </div>
+    </section>
 
-      <section id="digital-engine" class="study-block">
-        <div class="eyebrow" style="color: var(--accent); font-weight: 700; font-size: 12px; margin-bottom: 10px;">CIVIC BRAND / ECONOMIC DEV</div>
-        <h2>Digital Measurement & Content Engine</h2>
-        <p class="narrative">
-          Moving beyond vanity metrics, I built a modular content system for economic development that turned raw 
-          analytics into actionable strategy.
-        </p>
-        </section>
-    </main>
+    <section id="military-comms">
+      <div class="content-wrap">
+        <div class="narrative">
+          <span class="badge">Public Affairs</span>
+          <h2>High-Stakes Narrative Strategy</h2>
+          <p>Executing communication strategy under extreme constraints. This involved building crisp, defensible narratives for leadership that reduced stakeholder friction and protected brand reputation during crisis windows.</p>
+        </div>
+        <div class="visual-stack">
+          <div class="stat-row">
+            <span class="number" data-val="0">0</span><span class="number">Thrash</span>
+            <span class="label">Message Discipline achieved</span>
+          </div>
+          <div class="label">Stakeholder Alignment</div>
+          <div class="diagram-bar" style="background: linear-gradient(90deg, #f59e0b, #fbbf24); width: 0;" data-width="100%"></div>
+        </div>
+      </div>
+    </section>
+
   </div>
 
   <script>
-    // Intersection Observer for animations
+    // Intersection Observer to trigger number counting and bar animations
+    const observerOptions = { threshold: 0.6 };
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          // Start counting numbers
-          const counters = entry.target.querySelectorAll('.data-val');
-          counters.forEach(c => {
-            const target = +c.getAttribute('data-target');
-            let count = 0;
-            const inc = target / 50;
+          entry.target.classList.add('active');
+          
+          // Animate Numbers
+          const nums = entry.target.querySelectorAll('.number[data-val]');
+          nums.forEach(num => {
+            const target = +num.getAttribute('data-val');
+            if (target === 0) return; // Skip if 0
+            let current = 0;
+            const duration = 1000;
+            const inc = target / (duration / 16);
             const update = () => {
-              if(count < target) {
-                count += inc;
-                c.innerText = Math.ceil(count) + (target > 50 ? '' : '+');
-                setTimeout(update, 20);
-              } else { c.innerText = target + (target > 50 ? '' : '+'); }
+              current += inc;
+              if (current < target) {
+                num.innerText = Math.ceil(current);
+                requestAnimationFrame(update);
+              } else {
+                num.innerText = target;
+              }
             };
             update();
           });
+
+          // Animate Bars
+          const bars = entry.target.querySelectorAll('.diagram-bar');
+          bars.forEach(bar => {
+            bar.style.width = bar.getAttribute('data-width');
+          });
         }
       });
-    }, { threshold: 0.2 });
+    }, observerOptions);
 
-    document.querySelectorAll('.study-block').forEach(b => observer.observe(b));
+    document.querySelectorAll('section').forEach(section => observer.observe(section));
   </script>
 </body>
 </html>
