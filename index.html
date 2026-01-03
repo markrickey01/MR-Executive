@@ -1,215 +1,204 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Mark Rickey — Portfolio</title>
-
-<!-- AOS (Animate on Scroll) -->
-<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
 <!-- Mermaid -->
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 
 <style>
-:root {
-  --bg: #07070a;
+:root{
+  --bg:#07070A;
   --card: rgba(255,255,255,.05);
-  --border: rgba(255,255,255,.12);
-  --text: rgba(255,255,255,.95);
-  --muted: rgba(255,255,255,.7);
-  --accent: rgba(255,255,255,.6);
+  --border: rgba(255,255,255,.10);
+  --muted: rgba(255,255,255,.72);
+  --text: rgba(255,255,255,.92);
+  --max: 1080px;
+  --r: 22px;
 }
 
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-  background: radial-gradient(1200px 600px at 20% 10%, rgba(255,255,255,.08), transparent 60%),
-              radial-gradient(900px 500px at 80% 90%, rgba(255,255,255,.05), transparent 60%),
-              var(--bg);
-  color: var(--text);
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family: ui-sans-serif, system-ui;
+  line-height:1.45;
 }
 
-.container {
-  max-width: 1100px;
-  margin: auto;
-  padding: 40px 20px;
+/* === PREMIUM GRADIENT FIELD === */
+.fx{
+  position:fixed; inset:0; z-index:-1;
+  background:
+    radial-gradient(900px 500px at 20% 10%, rgba(255,255,255,.10), transparent 60%),
+    radial-gradient(800px 450px at 85% 80%, rgba(255,255,255,.06), transparent 60%),
+    linear-gradient(180deg, rgba(0,0,0,.2), rgba(0,0,0,.9));
+  transition: transform .4s ease, opacity .4s ease;
 }
 
-h1 {
-  font-size: 3rem;
-  margin-bottom: 10px;
+/* === LAYOUT === */
+.wrap{max-width:var(--max);margin:auto;padding:0 16px}
+section{padding:18px 0}
+.grid{display:grid;gap:14px}
+.two{grid-template-columns:1.2fr .8fr}
+.three{grid-template-columns:repeat(3,1fr)}
+.four{grid-template-columns:repeat(4,1fr)}
+@media(max-width:960px){.two,.three,.four{grid-template-columns:1fr}}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+}
+.in{padding:18px}
+
+/* === SCROLL REVEAL === */
+.reveal{opacity:0;transform:translateY(14px);transition:.6s ease}
+.reveal.on{opacity:1;transform:none}
+
+/* === TEXT === */
+h1{font-size:clamp(28px,3vw,44px);margin:8px 0}
+h2{font-size:20px;margin:6px 0}
+h3{font-size:16px;margin:0 0 6px}
+p{margin:6px 0;color:var(--muted)}
+.list{padding-left:18px;font-size:13px}
+.list li{margin:6px 0}
+
+/* === NAV === */
+.nav{
+  position:sticky;top:0;
+  backdrop-filter:blur(10px);
+  background:rgba(0,0,0,.45);
+  border-bottom:1px solid var(--border);
+}
+.nav .wrap{display:flex;justify-content:space-between;align-items:center;padding:10px 16px}
+.brand{display:flex;gap:10px;align-items:center;color:var(--text);text-decoration:none;font-weight:700}
+.logo{width:34px;height:34px;border-radius:12px;border:1px solid var(--border);object-fit:cover}
+
+/* === PILLS / BUTTONS === */
+.pills{display:flex;gap:8px;flex-wrap:wrap}
+.pill,.btn{
+  border:1px solid var(--border);
+  border-radius:999px;
+  padding:6px 10px;
+  font-size:12px;
+  background:rgba(255,255,255,.05);
+  color:var(--text);
+  text-decoration:none;
+}
+.btn.primary{background:rgba(255,255,255,.14)}
+
+/* === KPI + BARS === */
+.kpi{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:14px;padding:12px}
+.label{font-size:11px;text-transform:uppercase;letter-spacing:.2em;color:rgba(255,255,255,.6)}
+.value{margin-top:6px;font-weight:700}
+.bar{height:6px;background:rgba(255,255,255,.12);border-radius:999px;margin-top:6px;overflow:hidden}
+.bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,#fff,#aaa)}
+.reveal.on .bar span{width:var(--w);transition:1s ease}
+
+/* === MERMAID === */
+.mermaid{
+  background:rgba(0,0,0,.35);
+  border-radius:18px;
+  padding:14px;
+  border:1px solid var(--border);
+  overflow-x:auto;
 }
 
-h2 {
-  font-size: 1.5rem;
-  margin: 40px 0 10px;
-}
+/* === ACCORDION === */
+details{border:1px solid var(--border);border-radius:18px;background:rgba(255,255,255,.05)}
+summary{padding:14px;cursor:pointer;list-style:none}
+summary::-webkit-details-marker{display:none}
 
-p { color: var(--muted); }
-
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 20px;
-  margin-bottom: 20px;
-  transition: transform .25s ease, box-shadow .25s ease;
-}
-
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(0,0,0,.4);
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
-}
-
-/* Progress Bars */
-.bar {
-  background: rgba(255,255,255,.1);
-  height: 8px;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.bar span {
-  display: block;
-  height: 100%;
-  width: 0;
-  background: linear-gradient(90deg, #fff, #aaa);
-  animation: loadBar 1.2s forwards;
-}
-
-@keyframes loadBar {
-  to { width: var(--w); }
-}
-
-/* Mermaid container */
-.mermaid {
-  background: rgba(0,0,0,.3);
-  border-radius: 14px;
-  padding: 12px;
-  overflow-x: auto;
-}
-
-footer {
-  text-align: center;
-  color: rgba(255,255,255,.4);
-  margin: 60px 0 20px;
-  font-size: .85rem;
-}
+footer{padding:24px 0;font-size:12px;color:rgba(255,255,255,.5);text-align:center}
 </style>
 </head>
 
 <body>
+<div class="fx" id="fx"></div>
 
-<div class="container">
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <img class="logo" src="PressRelease_NewExecDirec.png" alt="Mark Rickey"/>
+      <span>Mark Rickey</span>
+    </a>
+    <div class="pills">
+      <a class="btn" href="resume.html">Resume</a>
+      <a class="btn primary" href="mailto:markrickey01@gmail.com">Email</a>
+    </div>
+  </div>
+</header>
 
-  <!-- HERO -->
-  <section data-aos="fade-up">
-    <h1>Mark Rickey</h1>
-    <p>
-      Commander-operator. Strategy → Operating Model → Execution.  
-      I build systems leaders can actually run.
-    </p>
-  </section>
+<main id="top">
 
-  <!-- PRIMARY LANES -->
-  <section class="grid" data-aos="fade-up">
-    <div class="card">
-      <strong>Strategy & Governance</strong>
-      <p>Decision rights, cadence, KPIs.</p>
+<section class="wrap reveal">
+  <div class="grid two">
+    <div>
+      <div class="pills">
+        <span class="pill">Indiana, USA</span>
+        <span class="pill">Strategy + Execution</span>
+        <span class="pill">Public Trust</span>
+      </div>
+      <h1>Commander-operator leader for modern growth and digital transformation.</h1>
+      <p>I build systems that ship. Strategy → operating model → execution.</p>
     </div>
     <div class="card">
-      <strong>Execution Systems</strong>
-      <p>Playbooks, dashboards, automation.</p>
+      <div class="in">
+        <h3>What you get</h3>
+        <ul class="list">
+          <li>Clear decision rights and operating cadence</li>
+          <li>Artifacts leaders actually use</li>
+          <li>Measured outcomes, not vibes</li>
+        </ul>
+      </div>
     </div>
-    <div class="card">
-      <strong>Public Trust</strong>
-      <p>Risk-aware leadership and accountability.</p>
-    </div>
-  </section>
+  </div>
+</section>
 
-  <!-- OPERATING MODEL -->
-  <section data-aos="fade-up">
-    <h2>Operating Model</h2>
-    <div class="card">
-      <div class="mermaid">
+<section class="wrap reveal">
+  <h2>Operating Model</h2>
+  <div class="mermaid">
 flowchart TD
-  Strategy --> OperatingModel
-  OperatingModel --> DecisionRights
-  OperatingModel --> Cadence
-  DecisionRights --> Execution
-  Cadence --> Execution
-  Execution --> Metrics
-  Metrics --> Strategy
-      </div>
-    </div>
-  </section>
+Strategy --> OperatingModel --> Execution --> Metrics --> Strategy
+  </div>
+</section>
 
-  <!-- DECISION RIGHTS -->
-  <section data-aos="fade-up">
-    <h2>Decision Rights</h2>
-    <div class="card">
-      <div class="mermaid">
-flowchart LR
-  Board -->|Policy| ExecutiveDirector
-  ExecutiveDirector --> Programs
-  ExecutiveDirector --> Finance
-  ExecutiveDirector --> Partners
-      </div>
-    </div>
-  </section>
-
-  <!-- MEASURED OUTCOMES -->
-  <section data-aos="fade-up">
-    <h2>Measured Outcomes</h2>
-    <div class="grid">
-      <div class="card">
-        <p>Time-to-Answer</p>
+<section class="wrap reveal">
+  <h2>Case Studies</h2>
+  <details>
+    <summary>
+      <strong>Nonprofit Operating System Rebuild</strong><br/>
+      <span class="muted">Turned ambiguity into cadence</span>
+    </summary>
+    <div class="in">
+      <ul class="list">
+        <li>Defined decision rights</li>
+        <li>Built KPI rhythm</li>
+        <li>Standardized reporting</li>
+      </ul>
+      <div class="kpi reveal">
+        <div class="label">Time-to-Answer</div>
+        <div class="value">↓ materially</div>
         <div class="bar"><span style="--w:70%"></span></div>
       </div>
-      <div class="card">
-        <p>Reporting Effort Reduced</p>
-        <div class="bar"><span style="--w:65%"></span></div>
-      </div>
-      <div class="card">
-        <p>Operational Clarity</p>
-        <div class="bar"><span style="--w:80%"></span></div>
-      </div>
     </div>
-  </section>
-
-  <!-- NOTE -->
-  <section data-aos="fade-up">
-    <div class="card">
-      <strong>Note</strong>
-      <p>
-        This site is intentionally restrained.  
-        Clear thinking, disciplined execution, and measurable outcomes
-        matter more than visual noise.
-      </p>
-    </div>
-  </section>
-
-</div>
+  </details>
+</section>
 
 <footer>
-  © 2026 Mark Rickey · Built for people who hire on signal
+© <span id="y"></span> Mark Rickey
 </footer>
 
-<!-- Scripts -->
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<script>
-  AOS.init({ once: true, duration: 600, easing: "ease-out-cubic" });
-  mermaid.initialize({ theme: "dark", startOnLoad: true });
-</script>
+</main>
 
+<script>
+document.getElementById("y").textContent=new Date().getFullYear();
+const obs=new IntersectionObserver(e=>e.forEach(x=>x.isIntersecting&&x.target.classList.add("on")),{threshold:.12});
+document.querySelectorAll(".reveal").forEach(el=>obs.observe(el));
+mermaid.initialize({theme:"dark",startOnLoad:true});
+</script>
 </body>
 </html>
