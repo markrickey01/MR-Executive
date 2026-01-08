@@ -1,6 +1,34 @@
-/* --- Interactive Operating Rhythm --- */
+/* --- Typography Stack (Global) --- */
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
-.rhythm-container {
+
+:root{
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-body: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --tracking-tight: -0.02em;
+  --tracking-wide: 0.08em;
+}
+
+/* Enforce global typography */
+html, body{
+  font-family: var(--font-body);
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, .headline, .section-title{
+  font-family: var(--font-display);
+  letter-spacing: var(--tracking-tight);
+}
+
+code, pre{
+  font-family: var(--font-mono);
+}
+
+/* --- Interactive Operating Rhythm --- */
+.rhythm-container{
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -8,7 +36,7 @@
   overflow-x: auto;
 }
 
-.rhythm-node {
+.rhythm-node{
   width: 80px;
   height: 80px;
   border-radius: 50%;
@@ -16,22 +44,28 @@
   background: rgba(255, 255, 255, 0.05);
   display: grid;
   place-items: center;
+
+  /* Typography */
+  font-family: var(--font-body);
   font-size: 11px;
   font-weight: 700;
+  letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
+
   cursor: pointer;
   transition: all 0.3s ease;
   flex-shrink: 0;
 }
 
-.rhythm-node:hover, .rhythm-node.active {
+.rhythm-node:hover,
+.rhythm-node.active{
   background: rgba(255, 255, 255, 0.15);
   border-color: rgba(255, 255, 255, 0.4);
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
   transform: translateY(-4px);
 }
 
-.connector {
+.connector{
   flex-grow: 1;
   height: 1px;
   background: rgba(255, 255, 255, 0.10);
@@ -39,155 +73,196 @@
 }
 
 /* --- Focus Card Hover Effects --- */
-#focus .card {
+#focus .card{
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s ease;
   position: relative;
   overflow: hidden;
 }
 
-#focus .card:hover {
+#focus .card:hover{
   transform: scale(1.03);
   border-color: rgba(255, 255, 255, 0.25);
 }
 
 /* --- Decision Rights (DACI) Table --- */
-.daci-row {
+.daci-row{
   display: flex;
   justify-content: space-between;
   padding: 8px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   transition: padding-left 0.2s ease;
+
+  /* Typography */
+  font-family: var(--font-body);
+  font-size: 12px;
 }
 
-.daci-row:hover {
+.daci-row:hover{
   padding-left: 8px;
   background: rgba(255, 255, 255, 0.02);
   color: #fff;
 }
-/* Dynamic Layout Enhancements */
-.kpi-row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-    margin-bottom: 16px;
+
+/* --- Dynamic Layout Enhancements --- */
+.kpi-row{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 16px;
 }
 
-.kpi-card {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 16px;
-    text-align: center;
-    transition: transform 0.3s ease, border-color 0.3s ease;
+.kpi-card{
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 16px;
+  text-align: center;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+
+  /* Typography */
+  font-family: var(--font-body);
 }
 
-.kpi-card:hover {
-    transform: translateY(-5px);
-    border-color: rgba(59, 130, 246, 0.5); /* Signal blue */
+.kpi-card:hover{
+  transform: translateY(-5px);
+  border-color: rgba(59, 130, 246, 0.5); /* Signal blue */
 }
 
-.kpi-num {
-    display: block;
-    font-size: 24px;
-    font-weight: 800;
-    color: #fff;
-    margin-bottom: 4px;
+.kpi-num{
+  display: block;
+
+  /* Typography (numbers feel better in body font) */
+  font-family: var(--font-body);
+  font-size: 24px;
+  font-weight: 800;
+
+  color: #fff;
+  margin-bottom: 4px;
 }
 
-.kpi-label {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--muted2);
+.kpi-label{
+  /* Typography */
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+
+  color: var(--muted2);
 }
 
-/* Skill Progress Bars */
-.skill-bar-wrap {
-    margin-top: 12px;
+/* --- Skill Progress Bars --- */
+.skill-bar-wrap{
+  margin-top: 12px;
 }
 
-.skill-item {
-    margin-bottom: 10px;
+.skill-item{
+  margin-bottom: 10px;
 }
 
-.skill-info {
-    display: flex;
-    justify-content: space-between;
-    font-size: 11px;
-    margin-bottom: 4px;
+.skill-info{
+  display: flex;
+  justify-content: space-between;
+
+  /* Typography */
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+
+  margin-bottom: 4px;
 }
 
-.bar-bg {
-    height: 4px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 2px;
-    overflow: hidden;
+.bar-bg{
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
 }
 
-.bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #3b82f6, #60a5fa);
-    width: 0; /* Animated via JS */
-    transition: width 1.5s cubic-bezier(0.1, 0.5, 0.2, 1);
+.bar-fill{
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+  width: 0; /* Animated via JS */
+  transition: width 1.5s cubic-bezier(0.1, 0.5, 0.2, 1);
 }
 
-/* Flow Arrows for Operating Models */
-.flow-container {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 10px;
+/* --- Flow Arrows for Operating Models --- */
+.flow-container{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
 }
 
-.flow-step {
-    font-size: 11px;
-    padding: 4px 8px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 6px;
-    border: 1px solid var(--border);
+.flow-step{
+  /* Typography */
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+
+  padding: 4px 8px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 6px;
+  border: 1px solid var(--border);
 }
 
-.arrow {
-    color: var(--muted2);
-    font-size: 12px;
+.arrow{
+  color: var(--muted2);
+  font-size: 12px;
 }
-/* High-End Reveal Animations */
-.reveal {
+
+/* --- High-End Reveal Animations --- */
+.reveal{
   opacity: 0;
   transform: translateY(30px);
   transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.reveal.active {
+
+.reveal.active{
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Interactive Operating Rhythm Artifact */
-.rhythm-graphic {
+/* --- Interactive Operating Rhythm Artifact --- */
+.rhythm-graphic{
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-top: 20px;
   position: relative;
 }
-.node {
-  width: 60px; height: 60px;
+
+.node{
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   border: 1px solid var(--border);
   background: rgba(255,255,255,0.03);
-  display: grid; place-items: center;
-  font-size: 10px; font-weight: 700;
+  display: grid;
+  place-items: center;
+
+  /* Typography */
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
+
   cursor: pointer;
   transition: 0.3s;
   z-index: 2;
 }
-.node:hover, .node.active {
+
+.node:hover,
+.node.active{
   background: var(--accent);
   border-color: transparent;
   box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
 }
-.line-connector {
+
+.line-connector{
   flex-grow: 1;
   height: 1px;
   background: var(--border);
@@ -196,10 +271,14 @@
   z-index: 1;
 }
 
-/* Dynamic KPI Counter Style for Teasers */
-.teaser-kpi {
+/* --- Dynamic KPI Counter Style for Teasers --- */
+.teaser-kpi{
+  /* Typography (display font for “signal” numbers) */
+  font-family: var(--font-display);
   font-size: 24px;
-  font-weight: 800;
+  font-weight: 700;
+  letter-spacing: var(--tracking-tight);
+
   color: var(--accent);
   display: block;
 }
