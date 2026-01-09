@@ -7,6 +7,8 @@
   <title>Mark Rickey — Resume</title>
 
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
     :root{
       --bg:#07070A;
       --accent: #3b82f6;
@@ -19,79 +21,180 @@
       --r: 22px;
       --shadow: 0 16px 40px rgba(0,0,0,.35);
 
+      --font-display: "Fraunces", ui-serif, Georgia, serif;
+      --font-body: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --tracking-tight: -0.02em;
+      --tracking-wide: 0.08em;
+
       /* gradient vars */
       --gX: 0px; --gY: 0px; --mx: 50%; --my: 30%; --rot: 200deg; --sheen: .55;
       --h1: 215; --h2: 255; --h3: 300;
     }
 
     *{box-sizing:border-box}
-    html,body{height:100%; margin:0; background:var(--bg); color:var(--text); font-family: ui-sans-serif, system-ui, sans-serif; line-height:1.45; overflow-x:hidden;}
+    html,body{
+      height:100%;
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family: var(--font-body);
+      line-height:1.45;
+      overflow-x:hidden;
+      text-rendering: geometricPrecision;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    h1,h2,h3{
+      font-family: var(--font-display);
+      letter-spacing: var(--tracking-tight);
+    }
+
+    code,pre{ font-family: var(--font-mono); }
+
+    .kpi-num{
+      font-family: var(--font-display);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: var(--tracking-tight);
+    }
+    .kpi-label, .pill, .when, .flow-node, .mini{
+      font-family: var(--font-body);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+    }
 
     /* Interactive Background */
     .fx{position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.9;}
     .fx::before{
       content:""; position:absolute; inset:-10%;
-      background: radial-gradient(900px 520px at 18% 12%, rgba(255,255,255,.10), transparent 60%), radial-gradient(860px 560px at 55% 88%, rgba(255,255,255,.06), transparent 60%), linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.92));
+      background:
+        radial-gradient(900px 520px at 18% 12%, rgba(255,255,255,.10), transparent 60%),
+        radial-gradient(860px 560px at 55% 88%, rgba(255,255,255,.06), transparent 60%),
+        linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.92));
       transform: translate3d(var(--gX), var(--gY), 0);
     }
     .fx::after{
       content:""; position:absolute; inset:-20%;
-      background: conic-gradient(from var(--rot) at var(--mx) var(--my), hsla(var(--h1), 88%, 62%, .14), hsla(var(--h2), 88%, 62%, .10), hsla(var(--h3), 88%, 62%, .08), hsla(var(--h1), 88%, 62%, .14));
-      mix-blend-mode: screen; filter: blur(26px); transform: translate3d(calc(var(--gX) * -0.6), calc(var(--gY) * -0.6), 0);
+      background: conic-gradient(from var(--rot) at var(--mx) var(--my),
+        hsla(var(--h1), 88%, 62%, .14),
+        hsla(var(--h2), 88%, 62%, .10),
+        hsla(var(--h3), 88%, 62%, .08),
+        hsla(var(--h1), 88%, 62%, .14)
+      );
+      mix-blend-mode: screen;
+      filter: blur(26px);
+      transform: translate3d(calc(var(--gX) * -0.6), calc(var(--gY) * -0.6), 0);
     }
 
     .wrap{ max-width:var(--max); margin:0 auto; padding: 0 16px; }
-    
+
     /* Top Bar */
     .topbar{ position: sticky; top:0; z-index:10; background: rgba(0,0,0,.42); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
-    .topbar .row{ padding: 10px 16px; display:flex; align-items:center; justify-content:space-between; }
-    .brand{ display:flex; align-items:center; gap:10px; font-weight:700; }
-    .dot{ width:34px; height:34px; border-radius: 12px; border: 1px solid var(--border); background: rgba(255,255,255,.05); }
-    
-    .btn{ border:1px solid var(--border); background: rgba(255,255,255,.05); color: var(--text); padding:9px 12px; border-radius: 14px; text-decoration:none; font-size:13px; cursor:pointer; display:inline-flex; align-items:center; gap:8px; }
-    .btn.primary{ background: var(--accent); border-color: transparent; color: #fff; }
+    .topbar .row{ max-width:var(--max); margin:0 auto; padding: 10px 16px; display:flex; align-items:center; justify-content:space-between; gap: 12px; }
+    .brand{ display:flex; align-items:center; gap:10px; font-weight:700; text-transform: uppercase; letter-spacing: var(--tracking-wide); }
+    .dot{ width:34px; height:34px; border-radius: 12px; border: 1px solid var(--border); background: rgba(255,255,255,.05); display:block; }
+
+    .btn{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      padding:9px 12px;
+      border-radius: 14px;
+      text-decoration:none;
+      font-size:13px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      transition: .25s;
+    }
+    .btn:hover{ background: rgba(255,255,255,.10); transform: translateY(-1px); }
+    .btn.primary{ background: var(--accent); border-color: transparent; color: #fff; font-weight: 600; }
 
     main{ padding: 24px 0; }
-    .sheet{ background: rgba(255,255,255,.02); border: 1px solid var(--border); border-radius: 26px; overflow:hidden; }
+    .sheet{ background: rgba(255,255,255,.02); border: 1px solid var(--border); border-radius: 26px; overflow:hidden; box-shadow: var(--shadow); }
     .in{ padding: 32px; }
 
     /* Header Section */
     .header{ display:grid; grid-template-columns: 1.2fr .8fr; gap:24px; align-items:start; margin-bottom: 32px;}
-    h1{ margin:0; font-size: 34px; letter-spacing:-1px; }
+    h1{ margin:0; font-size: 34px; }
     .tagline{ margin-top:8px; color: var(--muted); font-size: 15px; }
-    .contact{ display:flex; flex-direction:column; gap:8px; background: rgba(255,255,255,.04); border-radius: 18px; padding: 16px; color: var(--muted); font-size: 13px; border: 1px solid var(--border); }
+    .contact{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      background: rgba(255,255,255,.04);
+      border-radius: 18px;
+      padding: 16px;
+      color: var(--muted);
+      font-size: 13px;
+      border: 1px solid var(--border);
+    }
     .contact a{ color: var(--text); text-decoration:none; font-weight: 600; }
 
     /* KPI Cards */
-    .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 24px 0; }
-    .kpi-card { background: rgba(255,255,255,.03); border: 1px solid var(--border); border-radius: 18px; padding: 20px; text-align: center; transition: 0.3s; }
-    .kpi-card:hover { transform: translateY(-4px); border-color: var(--accent); }
-    .kpi-num { display: block; font-size: 28px; font-weight: 800; color: #fff; }
-    .kpi-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted2); margin-top: 4px; display: block; }
+    .kpi-row{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 24px 0; }
+    .kpi-card{ background: rgba(255,255,255,.03); border: 1px solid var(--border); border-radius: 18px; padding: 20px; text-align: center; transition: 0.3s; }
+    .kpi-card:hover{ transform: translateY(-4px); border-color: var(--accent); }
+    .kpi-num{ display: block; font-size: 28px; font-weight: 700; color: #fff; }
+    .kpi-label{ font-size: 10px; color: var(--muted2); margin-top: 6px; display: block; font-weight: 700; }
 
     /* Progress Graphics */
-    .skill-item { margin-bottom: 14px; }
-    .skill-info { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px; }
-    .bar-bg { height: 6px; background: rgba(255,255,255,.1); border-radius: 3px; overflow: hidden; }
-    .bar-fill { height: 100%; background: var(--accent); width: 0; transition: width 1.5s cubic-bezier(0.1, 0.5, 0.2, 1); }
+    .skill-item{ margin-bottom: 14px; }
+    .skill-info{ display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px; color: var(--muted); }
+    .bar-bg{ height: 6px; background: rgba(255,255,255,.1); border-radius: 3px; overflow: hidden; }
+    .bar-fill{ height: 100%; background: var(--accent); width: 0; transition: width 1.5s cubic-bezier(0.1, 0.5, 0.2, 1); }
 
     /* Experience Cards */
-    .section { border-top: 1px solid var(--border); padding: 24px 0; }
-    h2 { margin:0 0 16px; font-size: 12px; letter-spacing:.2em; text-transform:uppercase; color: var(--accent); }
-    .card { background: rgba(255,255,255,.03); border: 1px solid var(--border); border-radius: 18px; padding: 20px; margin-bottom: 12px; }
-    .job { display:flex; justify-content:space-between; align-items:baseline; margin-bottom: 10px; }
-    .job h3 { margin:0; font-size: 16px; }
-    .when { font-size: 12px; color: var(--accent); font-weight: 600; }
-    
-    .pill { display:inline-flex; padding:6px 12px; border-radius: 999px; font-size:11px; border:1px solid var(--border); background: rgba(255,255,255,.05); margin: 0 4px 8px 0; }
+    .section{ border-top: 1px solid var(--border); padding: 24px 0; }
+    h2{ margin:0 0 16px; font-size: 12px; color: var(--accent); }
+    .card{ background: rgba(255,255,255,.03); border: 1px solid var(--border); border-radius: 18px; padding: 20px; margin-bottom: 12px; }
+    .job{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom: 10px; gap: 12px; }
+    .job h3{ margin:0; font-size: 16px; }
+    .when{ font-size: 12px; color: var(--accent); font-weight: 700; }
+
+    .pill{
+      display:inline-flex;
+      padding:6px 12px;
+      border-radius: 999px;
+      font-size:11px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.05);
+      margin: 0 6px 8px 0;
+      color: var(--text);
+      font-weight: 700;
+    }
 
     /* Flow Diagram */
-    .flow { display: flex; align-items: center; gap: 10px; margin-top: 15px; }
-    .flow-node { padding: 6px 10px; background: rgba(255,255,255,.05); border: 1px solid var(--border); border-radius: 8px; font-size: 11px; }
-    .arrow { color: var(--accent); font-weight: 900; }
+    .flow{ display: flex; align-items: center; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
+    .flow-node{ padding: 6px 10px; background: rgba(255,255,255,.05); border: 1px solid var(--border); border-radius: 8px; font-size: 11px; font-weight: 700; }
+    .arrow{ color: var(--accent); font-weight: 900; }
 
-    @media (max-width: 768px){ .header, .kpi-row, .twoCol { grid-template-columns: 1fr; } }
-    @media print{ .fx, .topbar { display:none; } body { background:#fff; color:#000; } .sheet { border:0; } .card { border: 1px solid #ddd; } }
+    /* Footer */
+    .foot{
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      color: var(--muted2);
+      font-size: 12px;
+    }
+
+    @media (max-width: 768px){
+      .header, .kpi-row, .twoCol{ grid-template-columns: 1fr; }
+      .in{ padding: 22px; }
+      .job{ flex-direction: column; align-items: flex-start; }
+    }
+
+    @media print{
+      .fx, .topbar{ display:none; }
+      body{ background:#fff; color:#000; }
+      .sheet{ border:0; box-shadow:none; }
+      .card{ border: 1px solid #ddd; }
+      .kpi-card{ border: 1px solid #ddd; }
+      .btn{ display:none; }
+      a{ color:#000; text-decoration:none; }
+    }
   </style>
 </head>
 
@@ -114,17 +217,18 @@
   <main class="wrap">
     <div class="sheet">
       <div class="in">
-        
+
         <div class="header">
           <div>
             <h1>Mark Rickey, MPA, Veteran</h1>
             <div class="tagline">Program & Project Manager (DoD/IT) | Secure Digital Transformation | Veteran Leader</div>
             <div style="margin-top: 15px;">
-              <span class="pill">📍 Chicago, IL</span>
+              <span class="pill">📍 Fort Wayne, IN</span>
               <span class="pill">🛡️ U.S. Army Veteran</span>
               <span class="pill">⚖️ Active Secret Clearance</span>
             </div>
           </div>
+
           <div class="contact">
             <div><strong>Email:</strong> <a href="mailto:markrickey01@gmail.com">markrickey01@gmail.com</a></div>
             <div><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/markrickey01">markrickey01</a></div>
@@ -134,6 +238,7 @@
 
         <section class="section">
           <h2>Strategic Impact</h2>
+
           <div class="kpi-row">
             <div class="kpi-card">
               <span class="kpi-num" data-val="10">0</span>
@@ -148,6 +253,7 @@
               <span class="kpi-label">Mission Alignment</span>
             </div>
           </div>
+
           <div class="card">
             <p style="margin:0; font-size: 14px; color: var(--muted);">
               I lead secure digital transformation and program management initiatives that stabilize operations and build long-term resilience across defense, federal, and civic systems. My leadership philosophy centers on building systems that outlast people and results that don't need defending.
@@ -194,7 +300,7 @@
 
         <section class="section">
           <h2>Professional Execution</h2>
-          
+
           <div class="card">
             <div class="job">
               <h3>Executive Director | HDK</h3>
@@ -231,6 +337,7 @@
 
         <section class="section">
           <h2>Academic Foundation</h2>
+
           <div class="card">
             <div class="job">
               <h3>Master of Public Administration (MPA)</h3>
@@ -238,6 +345,7 @@
             </div>
             <div class="mini" style="font-size: 12px; color: var(--muted2);">SALUTE National Honor Society</div>
           </div>
+
           <div class="card">
             <div class="job">
               <h3>Bachelor of Arts (BA)</h3>
@@ -250,6 +358,7 @@
         <div class="foot">
           © <span id="y"></span> Mark L. Rickey • Generated as a High-Signal Brief.
         </div>
+
       </div>
     </div>
   </main>
@@ -258,8 +367,8 @@
     document.getElementById("y").textContent = new Date().getFullYear();
 
     // Background Controller
-    const fx = document.getElementById("fx");
-    let mx = 0.5, my = 0.3, tx = 0, ty = 0, raf = null;
+    const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+    let mx = 0.5, my = 0.3;
 
     function setVars(p){
       const h1 = 210 + (55 * p);
@@ -270,48 +379,63 @@
     }
 
     window.addEventListener("scroll", () => {
-      const p = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
-      document.documentElement.style.setProperty("--gY", (-120 * p).toFixed(1) + "px");
+      const doc = document.documentElement;
+      const max = (doc.scrollHeight - window.innerHeight) || 1;
+      const p = clamp(window.scrollY / max, 0, 1);
+      doc.style.setProperty("--gY", (-120 * p).toFixed(1) + "px");
       setVars(p);
-    });
+    }, { passive: true });
 
     window.addEventListener("pointermove", (e) => {
       mx = e.clientX / window.innerWidth;
       my = e.clientY / window.innerHeight;
       document.documentElement.style.setProperty("--gX", ((mx - 0.5) * 26).toFixed(1) + "px");
-      setVars(window.scrollY / (document.documentElement.scrollHeight - window.innerHeight));
-    });
+
+      const doc = document.documentElement;
+      const max = (doc.scrollHeight - window.innerHeight) || 1;
+      const p = clamp(window.scrollY / max, 0, 1);
+      setVars(p);
+    }, { passive: true });
 
     // Observer for KPI Counter and Skill Bars
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          // Animate Numbers
-          if (entry.target.classList.contains('kpi-num')) {
-            const target = +entry.target.getAttribute('data-val');
-            let count = 0;
-            const inc = target / 60;
-            const update = () => {
-              count += inc;
-              if (count < target) {
-                entry.target.innerText = Math.ceil(count);
-                requestAnimationFrame(update);
-              } else { entry.target.innerText = target; }
-            };
-            update();
+        if (!entry.isIntersecting) return;
+
+        // Animate Numbers
+        if (entry.target.classList.contains('kpi-num')) {
+          const target = Number(entry.target.getAttribute('data-val'));
+          if (!Number.isFinite(target)) {
+            observer.unobserve(entry.target);
+            return;
           }
 
-          // Animate Skill Bars (Wait for Scroll)
-          if (entry.target.classList.contains('bar-fill')) {
-            entry.target.style.width = entry.target.getAttribute('data-width');
-          }
+          let count = 0;
+          const steps = 60;
+          const inc = target / steps;
 
-          observer.unobserve(entry.target);
+          const update = () => {
+            count += inc;
+            if (count < target) {
+              entry.target.innerText = Math.ceil(count);
+              requestAnimationFrame(update);
+            } else {
+              entry.target.innerText = target;
+            }
+          };
+          update();
         }
+
+        // Animate Skill Bars
+        if (entry.target.classList.contains('bar-fill')) {
+          const w = entry.target.getAttribute('data-width');
+          if (w) entry.target.style.width = w;
+        }
+
+        observer.unobserve(entry.target);
       });
     }, { threshold: 0.5 });
 
-    // Attach observer to both numbers and bars
     document.querySelectorAll('.kpi-num, .bar-fill').forEach(el => observer.observe(el));
   </script>
 </body>
