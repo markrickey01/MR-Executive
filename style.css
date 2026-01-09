@@ -10,7 +10,7 @@
   --tracking-wide: 0.08em;
 }
 
-/* Enforce global typography */
+/* --- Global Typography Enforcement (authoritative, no HTML changes needed) --- */
 html, body{
   font-family: var(--font-body);
   text-rendering: geometricPrecision;
@@ -18,13 +18,35 @@ html, body{
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Headings = display */
 h1, h2, h3, .headline, .section-title{
   font-family: var(--font-display);
   letter-spacing: var(--tracking-tight);
 }
 
+/* Body copy + lists = body */
+p, li, .muted, .muted2{
+  font-family: var(--font-body);
+}
+
+/* UI microcopy = disciplined */
+.label, .mini, .eyebrow, .kpi-label, .skill-info, .flow-step, .daci-row, .rhythm-node, .node{
+  font-family: var(--font-body);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+/* Numbers / signal metrics = display */
+.teaser-kpi, .kpi-num{
+  font-family: var(--font-display);
+  letter-spacing: var(--tracking-tight);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Code = mono */
 code, pre{
   font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
 }
 
 /* --- Interactive Operating Rhythm --- */
@@ -45,12 +67,8 @@ code, pre{
   display: grid;
   place-items: center;
 
-  /* Typography */
-  font-family: var(--font-body);
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: var(--tracking-wide);
-  text-transform: uppercase;
 
   cursor: pointer;
   transition: all 0.3s ease;
@@ -92,8 +110,6 @@ code, pre{
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   transition: padding-left 0.2s ease;
 
-  /* Typography */
-  font-family: var(--font-body);
   font-size: 12px;
 }
 
@@ -118,9 +134,6 @@ code, pre{
   padding: 16px;
   text-align: center;
   transition: transform 0.3s ease, border-color 0.3s ease;
-
-  /* Typography */
-  font-family: var(--font-body);
 }
 
 .kpi-card:hover{
@@ -130,24 +143,15 @@ code, pre{
 
 .kpi-num{
   display: block;
-
-  /* Typography (numbers feel better in body font) */
-  font-family: var(--font-body);
   font-size: 24px;
   font-weight: 800;
-
   color: #fff;
   margin-bottom: 4px;
 }
 
 .kpi-label{
-  /* Typography */
-  font-family: var(--font-body);
   font-size: 10px;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
-
   color: var(--muted2);
 }
 
@@ -163,12 +167,8 @@ code, pre{
 .skill-info{
   display: flex;
   justify-content: space-between;
-
-  /* Typography */
-  font-family: var(--font-body);
   font-size: 11px;
   letter-spacing: 0.02em;
-
   margin-bottom: 4px;
 }
 
@@ -195,12 +195,8 @@ code, pre{
 }
 
 .flow-step{
-  /* Typography */
-  font-family: var(--font-body);
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: var(--tracking-wide);
-  text-transform: uppercase;
 
   padding: 4px 8px;
   background: rgba(255,255,255,0.05);
@@ -243,12 +239,8 @@ code, pre{
   display: grid;
   place-items: center;
 
-  /* Typography */
-  font-family: var(--font-body);
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: var(--tracking-wide);
-  text-transform: uppercase;
 
   cursor: pointer;
   transition: 0.3s;
@@ -273,25 +265,8 @@ code, pre{
 
 /* --- Dynamic KPI Counter Style for Teasers --- */
 .teaser-kpi{
-  /* Typography (display font for “signal” numbers) */
-  font-family: var(--font-display);
   font-size: 24px;
   font-weight: 700;
-  letter-spacing: var(--tracking-tight);
-
   color: var(--accent);
   display: block;
-}
-/* Global typography enforcement (no HTML changes needed) */
-h1 { font-family: var(--font-display); letter-spacing: var(--tracking-tight); }
-h2 { font-family: var(--font-display); letter-spacing: var(--tracking-tight); }
-h3 { font-family: var(--font-display); letter-spacing: var(--tracking-tight); }
-
-p, li, .muted, .muted2 { font-family: var(--font-body); }
-
-.teaser-kpi, .kpi-num { font-family: var(--font-display); }
-.label, .mini, .eyebrow { 
-  font-family: var(--font-body);
-  letter-spacing: var(--tracking-wide);
-  text-transform: uppercase;
 }
